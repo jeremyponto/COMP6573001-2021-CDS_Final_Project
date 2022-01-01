@@ -1,3 +1,3 @@
-###Group Members
--Jeremy Ponto (jeremyponto)
--Kevin Herman Otnieliem (kevinherman1104)
+### Group Members
+- Jeremy Ponto (jeremyponto)
+- Kevin Herman Otnieliem (kevinherman1104)
