@@ -10,7 +10,11 @@ public class Student {
     private final String email;
     private final Gender gender;
 
-    public Student(UUID studentId, String firstName, String lastName, String email, Gender gender) {
+    public Student(UUID studentId,
+                   String firstName,
+                   String lastName,
+                   String email,
+                   Gender gender) {
         this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;
