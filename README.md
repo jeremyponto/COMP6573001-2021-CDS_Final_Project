@@ -1,1 +1,3 @@
-# COMP6573001-2021-CDS_Final_Project
+###Group Members
+-Jeremy Ponto (jeremyponto)
+-Kevin Herman Otnieliem (kevinherman1104)
