@@ -94,6 +94,7 @@ class App extends Component {
       return(
         <Container>
           <Table
+            style={{paddingBottom: '100px'}}
             dataSource={students}
             columns={columns}
             pagination={false}
@@ -104,7 +105,13 @@ class App extends Component {
             onOk={this.closeAddStudentModal}
             onCancel={this.closeAddStudentModal}
             width={1000}>
-            <AddStudentForm />
+            <AddStudentForm
+              onSuccess={() => {
+                this.closeAddStudentModal();
+
+                this.fetchStudents();
+              }}
+            />
           </Modal>
           <Footer
             numberOfStudents={students.length}
