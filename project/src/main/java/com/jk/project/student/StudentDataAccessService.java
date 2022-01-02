@@ -31,13 +31,35 @@ public class StudentDataAccessService {
         return jdbcTemplate.query(sql, mapStudentFromDb());
     }
 
+    int insertStudent(UUID studentId, Student student) {
+        String sql = "" +
+                "INSERT INTO student (" +
+                " student_id, " +
+                " first_name, " +
+                " last_name, " +
+                " email, " +
+                " gender) " +
+                "VALUES (?, ?, ?, ?, ?)";
+
+        return jdbcTemplate.update(
+                sql,
+                studentId,
+                student.getFirstName(),
+                student.getLastName(),
+                student.getEmail(),
+                student.getGender().name().toUpperCase()
+        );
+    }
+
     private RowMapper<Student> mapStudentFromDb() {
         return (resultSet, i) -> {
             String studentIdStr = resultSet.getString("student_id");
             UUID studentId = UUID.fromString(studentIdStr);
 
             String firstName = resultSet.getString("first_name");
+
             String lastName = resultSet.getString("last_name");
+
             String email = resultSet.getString("email");
 
             String genderStr = resultSet.getString("gender").toUpperCase();
