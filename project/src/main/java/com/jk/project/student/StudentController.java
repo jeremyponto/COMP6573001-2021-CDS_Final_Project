@@ -18,14 +18,14 @@ public class StudentController {
                         UUID.randomUUID(),
                         "Jeremy",
                         "Ponto",
-                        "jeremyponto@gmail.com",
+                        "jeremyponto01@gmail.com",
                         Student.Gender.MALE
                 ),
                 new Student(
                         UUID.randomUUID(),
                         "Kevin",
                         "Herman",
-                        "kevinherman@gmail.com",
+                        "kevinherman547@yahoo.com",
                         Student.Gender.MALE
                 )
         );
