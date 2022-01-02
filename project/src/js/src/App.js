@@ -4,7 +4,8 @@ import Footer from './Footer';
 import './App.css';
 import { getAllStudents } from './client';
 import AddStudentForm from './forms/AddStudentForm';
-import { Table, Avatar, Spin, Modal } from 'antd';
+import { errorNotification } from './Notification';
+import { Table, Avatar, Spin, Modal, message } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const getIndicatorIcon = () => <LoadingOutlined style={{ fontSize: 24 }} spin/>;
@@ -39,7 +40,12 @@ class App extends Component {
         });
       }))
       .catch(error => {
-        console.log(error.error.message);
+        console.log(error.error);
+
+        const message = error.error.message;
+        const description = error.error.error;
+
+        errorNotification(message, description);
 
         this.setState({
           isFetching: false
