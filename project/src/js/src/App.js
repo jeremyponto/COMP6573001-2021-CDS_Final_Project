@@ -37,7 +37,14 @@ class App extends Component {
           students,
           isFetching: false
         });
-      }));
+      }))
+      .catch(error => {
+        console.log(error.error.message);
+
+        this.setState({
+          isFetching: false
+        })
+      })
   }
 
   render() {
