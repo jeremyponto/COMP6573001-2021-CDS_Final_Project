@@ -1,29 +1,45 @@
 import React, { Component } from "react";
 import { Formik } from "formik";
-import { Input, Button } from "antd";
+import { Input, Button, Tag } from "antd";
 
 const inputBottomMargin = {marginBottom: '10px'};
+const tagStyle = {backgroundColor: '#f50', color: 'white', borderRadius: '2px', ...inputBottomMargin};
 
 class AddStudentForm extends Component {
     render() {
         return(
             <Formik
-            initialValues={{ email: '', password: '' }}
+            initialValues={{ firstName: '', lastName: '', email: '', gender: '' }}
             validate={values => {
                 const errors = {};
-                if (!values.email) {
-                errors.email = 'Required';
-                } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                ) {
-                errors.email = 'Invalid email address';
+                
+                if (!values.firstName) {
+                    errors.firstName = 'First name required';
                 }
+                
+                if (!values.lastName) {
+                    errors.lastName = 'Last name required';
+                }
+                
+                if (!values.email) {
+                    errors.email = 'Email required';
+                } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+                    errors.email = 'Invalid email address';
+                }
+                
+                if (!values.gender) {
+                    errors.gender = 'Gender required';
+                } else if (!['MALE', 'male', 'FEMALE', 'female'].includes(values.gender)) {
+                    errors.gender = 'Gender must be MALE, male, FEMALE, or female';
+                }
+                
                 return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
                 setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
+                    alert(JSON.stringify(values, null, 2));
+                    
+                    setSubmitting(false);
                 }, 400);
             }}
             >
@@ -35,6 +51,8 @@ class AddStudentForm extends Component {
                 handleBlur,
                 handleSubmit,
                 isSubmitting,
+                submitForm,
+                isValid
                 /* and other goodies */
             }) => (
                 <form onSubmit={handleSubmit}>
@@ -44,18 +62,20 @@ class AddStudentForm extends Component {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.firstName}
-                        placeholder='First name. E.g John'
+                        placeholder='First Name (e.g., John)'
                     />
-                    {errors.firstName && touched.firstName && errors.firstName}
+                    {errors.firstName && touched.firstName &&
+                        <Tag style={tagStyle}>{errors.firstName}</Tag>}
                     <Input
                         style={inputBottomMargin}
                         name="lastName"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.lastName}
-                        placeholder='Last name. E.g Doe'
+                        placeholder='Last Name (e.g., Doe)'
                     />
-                    {errors.lastName && touched.lastName && errors.lastName}
+                    {errors.lastName && touched.lastName &&
+                        <Tag style={tagStyle}>{errors.lastName}</Tag>}
                     <Input
                         style={inputBottomMargin}
                         name="email"
@@ -63,20 +83,25 @@ class AddStudentForm extends Component {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.email}
-                        placeholder='Email. E.g example.gmail.com'
+                        placeholder='Email (e.g., example.gmail.com)'
                     />
-                    {errors.email && touched.email && errors.email}
+                    {errors.email && touched.email &&
+                        <Tag style={tagStyle}>{errors.email}</Tag>}
                     <Input
                         style={inputBottomMargin}
                         name="gender"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.gender}
-                        placeholder='Gender. E.g Male or Female'
+                        placeholder='Gender (e.g., Male, Female)'
                     />
-                    {errors.gender && touched.gender && errors.gender}
-                    <Button type="submit" disabled={isSubmitting}>
-                        Submit
+                    {errors.gender && touched.gender &&
+                        <Tag style={tagStyle}>{errors.gender}</Tag>}
+                    <Button
+                        onClick={() => submitForm()}
+                        type="submit"
+                        disabled={isSubmitting | (touched && !isValid)}>
+                            Submit
                     </Button>
                 </form>
             )}
