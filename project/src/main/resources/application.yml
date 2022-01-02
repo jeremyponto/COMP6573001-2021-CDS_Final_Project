@@ -2,3 +2,10 @@ server:
   servlet:
     context-path: /api
   port: 8081
+
+app:
+  datasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/cdsproject
+    username: postgres
+    password: cloudanddistributedsystems
+    pool-size: 30
