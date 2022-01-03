@@ -75,4 +75,18 @@ public class StudentDataAccessService {
         };
     }
 
+    boolean isEmailTaken(String email) {
+        String sql = "" +
+                "SELECT EXISTS(" +
+                "SELECT 1 " +
+                "FROM student " +
+                "WHERE email = ?" +
+                ")";
+        return Boolean.TRUE.equals(jdbcTemplate.queryForObject(
+                sql,
+                new Object[]{email},
+                (resultSet, i) -> resultSet.getBoolean(1)
+        ));
+
+    }
 }
