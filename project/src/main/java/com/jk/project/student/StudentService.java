@@ -1,5 +1,7 @@
 package com.jk.project.student;
 
+import com.jk.project.EmailValidator;
+import com.jk.project.exception.ApiRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,12 @@ import java.util.UUID;
 public class StudentService {
 
     private final StudentDataAccessService studentDataAccessService;
+    private final EmailValidator emailValidator;
 
     @Autowired
-    public StudentService(StudentDataAccessService studentDataAccessService) {
+    public StudentService(StudentDataAccessService studentDataAccessService, EmailValidator emailValidator) {
         this.studentDataAccessService = studentDataAccessService;
+        this.emailValidator = emailValidator;
     }
 
     List<Student> getAllStudents() {
@@ -30,6 +34,10 @@ public class StudentService {
                 .orElse(UUID.randomUUID());
 
         // TODO: Validate email
+        if (!emailValidator.test(student.getEmail())){
+            throw new ApiRequestException(student.getEmail() + " is not valid ");
+
+        }
         // TODO: Verify that email is not taken
 
         studentDataAccessService.insertStudent(newStudentId, student);
