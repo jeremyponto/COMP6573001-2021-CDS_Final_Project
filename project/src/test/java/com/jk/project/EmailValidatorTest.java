@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class EmailValidatorTest {
+public class EmailValidatorTest {
 
     private final EmailValidator underTest = new EmailValidator();
 
