@@ -1,9 +1,6 @@
-server:
-  servlet:
-    context-path:
-  port: 8081
-  error:
-    include-message: always
+spring:
+  profiles:
+    active: @spring.profiles.active@
 
 app:
   datasource:

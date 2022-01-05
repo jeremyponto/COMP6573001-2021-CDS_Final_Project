@@ -14,9 +14,9 @@
 	<name>project</name>
 	<description>Demo project for Cloud and Distributed Systems</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>11</java.version>
 		<frontend-maven-plugin.version>1.12.1</frontend-maven-plugin.version>
-		<node.version>v14.17.6</node.version>
+		<node.version>v16.13.1</node.version>
 		<yarn.version>v1.22.17</yarn.version>
 	</properties>
 	<dependencies>
@@ -52,6 +52,24 @@
 			<version>3.21.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-resources-plugin</artifactId>
+			<version>3.2.0</version>
+			<type>maven-plugin</type>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>3.8.1</version>
+			<type>maven-plugin</type>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<version>${project.parent.version}</version>
+			<type>maven-plugin</type>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -59,7 +77,6 @@
 			<id>demo</id>
 			<build>
 				<plugins>
-
 					<plugin>
 						<groupId>com.github.eirslett</groupId>
 						<artifactId>frontend-maven-plugin</artifactId>
@@ -132,6 +149,101 @@
 					</plugin>
 				</plugins>
 			</build>
+			<properties>
+				<spring.profiles.active>
+					demo
+				</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>demo-compile-to-java-17</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.eirslett</groupId>
+						<artifactId>frontend-maven-plugin</artifactId>
+						<version>${frontend-maven-plugin.version}</version>
+						<configuration>
+							<workingDirectory>src/js</workingDirectory>
+						</configuration>
+						<executions>
+							<execution>
+								<id>install node</id>
+								<goals>
+									<goal>install-node-and-yarn</goal>
+								</goals>
+								<configuration>
+									<nodeVersion>${node.version}</nodeVersion>
+									<yarnVersion>${yarn.version}</yarnVersion>
+								</configuration>
+							</execution>
+							<execution>
+								<id>yarn install</id>
+								<goals>
+									<goal>yarn</goal>
+								</goals>
+								<phase>generate-resources</phase>
+							</execution>
+							<execution>
+								<id>yarn test</id>
+								<goals>
+									<goal>yarn</goal>
+								</goals>
+								<phase>test</phase>
+								<configuration>
+									<arguments>test</arguments>
+									<environmentVariables>
+										<CI>true</CI>
+									</environmentVariables>
+								</configuration>
+							</execution>
+							<execution>
+								<id>yarn build</id>
+								<goals>
+									<goal>yarn</goal>
+								</goals>
+								<phase>compile</phase>
+								<configuration>
+									<arguments>build</arguments>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-resources</id>
+								<phase>process-classes</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${basedir}/target/classes/static</outputDirectory>
+									<resources>
+										<resource>
+											<directory>src/js/build</directory>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<source>1.8</source>
+							<target>1.8</target>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<spring.profiles.active>
+					demo
+				</spring.profiles.active>
+			</properties>
 		</profile>
 	</profiles>
 
